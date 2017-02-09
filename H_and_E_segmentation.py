@@ -20,7 +20,6 @@ __status__ = "Completed"
 
     This code works the best when image resolution is approximately 3 mu m/pixel.
 '''
-
 import sys
 import glob
 import os
@@ -59,9 +58,15 @@ def processImage(imagePath,clf):
     for segmentNum in range(0,segments.max()):
          
         newArray = color_original[segments==segmentNum]
-        RedArray = np.trim_zeros(newArray[:,0])
-        GreenArray = np.trim_zeros(newArray[:,1])
-        BlueArray = np.trim_zeros(newArray[:,2])        
+        
+        ## Error - Program crash because of remove zero values (from frontend or backend) in one array
+        #RedArray = np.trim_zeros(newArray[:,0])
+        #GreenArray = np.trim_zeros(newArray[:,1])
+        #BlueArray = np.trim_zeros(newArray[:,2])        
+        
+        RedArray = newArray[:,0]
+        GreenArray = newArray[:,1]
+        BlueArray = newArray[:,2]
         
         if (np.isnan(np.mean(RedArray)) | np.isnan(np.mean(GreenArray)) | np.isnan(np.mean(BlueArray))):
             print(np.mean(RedArray),np.mean(GreenArray),np.mean(BlueArray), " Skip the superpixel ... ")
@@ -107,6 +112,10 @@ def processFolder(DataPath, FolderPath, WritePath, Extension):
             continue
         else: 
             print("\n" + str(i) + " - Processing: " + filename)
+
+        if i == 1219:
+            print("\n" + str(i) + " - Damaged Image: " + filename)
+            continue
         
         # Call the function to process the image
         [Epithelium, Stroma, ColorImage] = processImage(file,clf)
