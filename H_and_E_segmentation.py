@@ -113,10 +113,6 @@ def processFolder(DataPath, FolderPath, WritePath, Extension):
         else: 
             print("\n" + str(i) + " - Processing: " + filename)
 
-        if i == 1219:
-            print("\n" + str(i) + " - Damaged Image: " + filename)
-            continue
-        
         # Call the function to process the image
         [Epithelium, Stroma, ColorImage] = processImage(file,clf)
         
